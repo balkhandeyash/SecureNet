@@ -79,7 +79,7 @@ const Dashboard = () => {
               <p>{job.companyName}</p>
               <p>{job.location}</p>
               <p className="job-description">{job.description}</p>
-              <p>
+              <p className="job-details-link">
                 <span className="link">{job.link}</span>
               </p>
             </div>

@@ -86,10 +86,15 @@
   height: 70vh;
   overflow-y: auto;
   padding-bottom: 50px;
+  text-align: justify;
+  display: flex;
+  flex-direction: column; /* Adjust for vertical centering */
+  align-items: center; 
+  overflow-x: hidden; 
 }
 
 .close-button {
-  position: absolute;
+  position: static;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
@@ -113,9 +118,19 @@
   margin-top: 20px;
 }
 
+.job-details-link {
+  max-width: 100%; /* Set the maximum width for the link in the job details card */
+  overflow: hidden;
+  white-space: nowrap; /* Prevent link from breaking into new lines */
+  text-overflow: ellipsis; /* Show an ellipsis (...) if the link overflows */
+}
+
+
 .link {
   color: #007bff;
   text-decoration: none;
+  overflow-x: hidden;
+  
 }
 
 button {
@@ -143,7 +158,7 @@ button:disabled {
 
   .job-card {
     width: 80vw;
-    height: 40wh;
+    height: 300px;
     padding: 15px;
     /* Adjust padding for smaller screens */
     border-radius: 12px;
@@ -151,6 +166,7 @@ button:disabled {
 
   .job-details-card {
     position: fixed;
+    text-align: justify;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -160,11 +176,13 @@ button:disabled {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 3;
     width: 80vw;
-    height: 80vh;
+    height: 60vh;
+    max-width: 80vw;
+    overflow-x: hidden; 
   }
 
   .close-button {
-    position: absolute;
+    position:static;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
@@ -175,5 +193,24 @@ button:disabled {
     color: #fff;
     border: none;
     border-radius: 4px;
+    align-items: center;
   }
+  .job-details-link {
+    max-width: 60vw;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #007bff; /* Set link color to blue */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  /* Wrap the link inside the job details card */
+  .job-details-card .job-details-link {
+    max-width: 100%; /* Occupy full width inside the job details card */
+    text-align: center;
+    color: #007bff; /* Set link color to blue */
+    text-decoration: none; /* Remove underline */
+  }
+
 }

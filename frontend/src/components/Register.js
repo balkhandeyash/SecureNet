@@ -29,7 +29,7 @@ const Register = () => {
 
       // Send OTP to the provided email
       const response = await axios.post(
-        "https://securenet-backend.onrender.com/send-otp",
+        "https://securenet-backend.vercel.app/send-otp",
         { email },
         {
           headers: {
@@ -63,7 +63,7 @@ const Register = () => {
 
       // Perform registration logic with email, username, password, captcha, and OTP
       const response = await axios.post(
-        "https://securenet-backend.onrender.com/register",
+        "https://securenet-backend.vercel.app/register",
         {
           name,
           username,

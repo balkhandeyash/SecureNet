@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://securenet-backend.onrender.com/",
+  baseURL: "https://securenet-backend.vercel.app/",
 });
 
 api.interceptors.request.use((config) => {

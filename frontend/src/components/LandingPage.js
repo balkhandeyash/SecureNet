@@ -59,7 +59,7 @@ function LandingPage() {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/applyJobs");
+      const response = await axios.get("https://securenet-backend.vercel.app/applyJobs");
       //console.log(response.data);
     } catch (error) {}
   };
@@ -77,7 +77,7 @@ function LandingPage() {
 
     try {
       const response = await fetch(
-        "https://securenet-backend.onrender.com/api/send-email",
+        "https://securenet-backend.vercel.app/api/send-email",
         {
           method: "POST",
           headers: {

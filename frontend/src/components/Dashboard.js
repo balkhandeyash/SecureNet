@@ -19,7 +19,7 @@ const Dashboard = () => {
   const fetchJobs = async () => {
     try {
       const response = await axios.get(
-        "https://securenet-backend.onrender.com/applyJobs"
+        "https://securenet-backend.vercel.app/applyJobs"
       );
       setJobs(response.data);
     } catch (error) {

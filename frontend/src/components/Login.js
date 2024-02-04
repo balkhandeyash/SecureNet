@@ -24,7 +24,7 @@ const Login = ({ setToken }) => {
 
       // Send a request to the server to initiate OTP sending
       const response = await axios.post(
-        "https://securenet-backend.onrender.com/login-otp",
+        "https://securenet-backend.vercel.app/login-otp",
         { username },
         {
           headers: {
@@ -40,7 +40,7 @@ const Login = ({ setToken }) => {
 
         // Generate and send OTP to the provided email
         const otpResponse = await axios.post(
-          "https://securenet-backend.onrender.com/send-otp",
+          "https://securenet-backend.vercel.app/send-otp",
           { email },
           {
             headers: {
@@ -76,7 +76,7 @@ const Login = ({ setToken }) => {
         return;
       }
       const response = await axios.post(
-        "https://securenet-backend.onrender.com/login",
+        "https://securenet-backend.vercel.app/login",
         {
           username,
           password,

@@ -43,7 +43,7 @@ const Profile = () => {
 
       // Make a PUT request to update user details
       const response = await axios.put(
-        "https://securenet-backend.onrender.com/api/user",
+        "https://securenet-backend.vercel.app/api/user",
         editedValuesTemp,
         {
           headers: {
@@ -53,7 +53,7 @@ const Profile = () => {
       );
       // Fetch the updated user data again from the server
     const updatedResponse = await axios.get(
-      "https://securenet-backend.onrender.com/api/user",
+      "https://securenet-backend.vercel.app/api/user",
       {
         headers: {
           Authorization: localStorage.getItem("token"),
@@ -80,7 +80,7 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          "https://securenet-backend.onrender.com/api/user",
+          "https://securenet-backend.vercel.app/api/user",
           {
             headers: {
               Authorization: localStorage.getItem("token"), // Include the token in the request headers

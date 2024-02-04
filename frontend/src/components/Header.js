@@ -13,13 +13,12 @@ function Header() {
     location.pathname === "/";
 
   const shouldRenderDropdown = !isLoginRegisterPage; // Render dropdown only if not on login/register/landing page
-  
 
   return (
     <>
       <div className="header">
         <div className="logo">
-          <img src="logo192.png" alt="Logo" />
+          <img src="-high-resolution-logo-transparent_(2).png" alt="Logo" />
           <span>SecureNet</span>
         </div>
         {isLoginRegisterPage ? (

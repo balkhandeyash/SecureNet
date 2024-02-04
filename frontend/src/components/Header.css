@@ -5,7 +5,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-  background-color: #333;
+  background-color: #222;
   color: white;
 }
 
@@ -27,6 +27,7 @@
 }
 
 .navigation li {
+  font-size: large;
   margin-right: 20px;
   cursor: pointer;
   color: white;
@@ -106,6 +107,10 @@
   color: #333;
 }
 
+.logo span {
+  font-size: larger;
+}
+
 @media screen and (max-width: 767px) {
   .header {
     flex-direction: row;
@@ -117,7 +122,7 @@
     padding-top: 6px;
     padding-bottom: 6px;
     padding-left: 1px;
-    margin-left: 3px;
+    margin-left: 15px;
   }
 
   .navigation ul {
@@ -132,28 +137,34 @@
   }
 
   .user-options {
-    margin-right: 0;
-    margin-top: 10px;
+    margin-right: 5px;
+    margin-top: 17px; /* Adjusted margin from the top */
   }
 
   .dropdown,
   .login-signup a {
-    margin-right: 0;
-    margin-top: 10px;
+    margin-right: 10px;
+    margin-top: 13px;
   }
+  
 
   .logo img {
-    width: 25px; /* Reduce logo image size */
+    width: 40px; /* Reduce logo image size */
     margin-right: 8px;
+  }
+
+  .logo span{
+    font-size: large;
   }
 
   .navigation li {
     font-size: 12px; /* Adjust font size for navigation items */
   }
+  
 
   .dropbtn,
   .dropdown-content a,
   .login-signup a {
-    font-size: 12px; /* Adjust font size for buttons and dropdown */
+    font-size: 13px; /* Adjust font size for buttons and dropdown */
   }
 }

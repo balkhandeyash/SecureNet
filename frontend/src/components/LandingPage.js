@@ -133,31 +133,41 @@ function LandingPage() {
         )}
 
         <h1>Welcome to Our Project</h1>
-        <p>
-          This is a brief description of our project. You can provide details
-          about the purpose, features, and goals of the project here.
+        <p className="description">
+        Discover our practical information security project, crafted to protect sensitive business data from unauthorized access and manipulation. Our project incorporates fundamental technologies like JWT, PassportJS, CryptoJS, and NodeMailer for encryption, decryption, and authentication. With three security layers—username/password, Google reCAPTCHA, and OTP verification—we prioritize straightforward measures to enhance data security. Employing CryptoJS ensures message security, leading to encrypted data storage in the database for added protection.
         </p>
 
         <div className="divider"></div>
 
         <div className="developers-section">
-          <h2>Meet Our Developers</h2>
+          <h2>Meet Our Team</h2>
+          <div className="developers-row">
+          <div className="developer">
+              <img src="Vijay.jpeg" alt="Developer 1" />
+              <p className="pname">Dr. V. B. Gadicha</p>
+              <p className="names">Mentor</p>
+            </div>
+          </div>
           <div className="developers-row">
             <div className="developer">
               <img src="Yash.png" alt="Developer 1" />
-              <p>Yash R. Balkhande</p>
+              <p className="pname">Yash R. Balkhande</p>
+              <p className="names">System Architect</p>
             </div>
             <div className="developer">
-              <img src="Gayatri.png" alt="Developer 2" />
-              <p>Gayatri S. Bhamburkar</p>
+              <img src="Gayatri.jpeg" alt="Developer 2" />
+              <p className="pname">Gayatri S. Bhamburkar</p>
+              <p className="names">Documentation Head</p>
             </div>
             <div className="developer">
               <img src="Shreyash.png" alt="Developer 3" />
-              <p>Shreyash N. Waghmare</p>
+              <p className="pname">Shreyash N. Waghmare</p>
+              <p className="names">Lead Developer</p>
             </div>
             <div className="developer">
-              <img src="vedant.png" alt="Developer 4" />
-              <p>Vedant P. Nehare</p>
+              <img src="vedant.jpeg" alt="Developer 4" />
+              <p className="pname">Vedant P. Nehare</p>
+              <p className="names">Quality Analyst</p>
             </div>
           </div>
         </div>
@@ -167,8 +177,8 @@ function LandingPage() {
         <div className="about-us-section">
           <h2>About Us</h2>
           <p>
-            Here you can provide a detailed description of your team, the
-            project, and any other relevant information about your organization.
+          Welcome to SecureNet your go-to destination for seamless job posting and hiring solutions! We understand the critical role that talent plays in the success of any organization, and we are committed to connecting employers with the right candidates while empowering individuals to find their dream careers. At SecureNet, we are more than just a job posting and hiring platform – we are your partners in talent acquisition and career advancement. Our platform is designed to simplify and streamline the entire hiring process, making it efficient, effective, and enjoyable for both employers and job seekers.We strive to bridge the gap between employers and candidates by providing a user-friendly, innovative platform that caters to the unique needs of both parties. 
+          </p><p>We believe that every person deserves the opportunity to showcase their skills, and every business deserves access to the best talent. User-Friendly Interface : Our platform boasts an intuitive and easy-to-navigate interface, ensuring a seamless experience for both employers and job seekers. Diverse Job Listings : Whether you're a seasoned professional or a recent graduate, our platform offers a wide array of job listings across industries, ensuring that everyone can find the perfect fit.
           </p>
         </div>
 

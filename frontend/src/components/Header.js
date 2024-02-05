@@ -50,7 +50,7 @@ function Header() {
             <div className="dropdown-content">
               <Link to="/profile">Profile</Link>
               <Link to="/dashboard">Job Openings</Link>
-              <Link to="#">Notifications</Link>
+              {/* <Link to="#">Notifications</Link>  */}
               <Link to="#">Post a Job</Link>
               <Link to="/">Logout</Link>
             </div>

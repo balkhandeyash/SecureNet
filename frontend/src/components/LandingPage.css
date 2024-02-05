@@ -2,7 +2,7 @@ body, html {
     height: 100%;
     margin: 0;
   }
-  
+
  /* LandingPage.css */
 
 .progress-bar-container {
@@ -19,6 +19,29 @@ body, html {
   z-index: 999;
   border-radius: 8px;
   animation: fadeInOut 1.5s infinite alternate;
+}
+
+.developer p{
+  text-align: center;
+  padding-bottom: 0%;
+  margin-bottom: 0%;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.landing-page p{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.pname{
+  font-size: 18px;
+}
+
+.names {
+  padding-top: 0%;
+  padding-bottom: 0%;
+  margin-bottom: 1px;
+  font-size: 16px;
 }
 
 @keyframes fadeInOut {
@@ -54,6 +77,20 @@ body, html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Enable vertical scrolling */
   }
+
+  .description {
+    text-align: justify;
+    padding: 0px 100px 0px;
+    font-size: 1.25rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+
+  .landing-page h1{
+    padding: 0px 10px 0px;
+    font-size: 1.7rem;
+  }
+
+  
   
   .divider {
     border-top: 2px solid #ccc;
@@ -71,6 +108,10 @@ body, html {
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
+
+  .developers-row p{
+    text-align: center;
+  }
   
   .developer {
     margin: 15px;
@@ -87,10 +128,12 @@ body, html {
     border: 5px solid blanchedalmond;
   }
   
-  .developer p {
-    margin-top: 10px;
-    font-weight: bold;
+  .contact-us-section p {
+    padding: 0px 40px 0px;
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
+ 
   
   .about-us-section,
   .contact-us-section {
@@ -137,4 +180,31 @@ button {
 button:hover {
   background-color: #0056b3; /* Change to your desired button hover color */
 }
-  
+
+.about-us-section p{
+  text-align: justify;
+    padding: 0px 40px 0px;
+    font-size: 1.25rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+@media screen and (max-width: 767px) {
+  .landing-page p {
+    text-align: justify;
+    padding: 0px 40px 0px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+  .developer p{
+    text-align: center;
+  }
+  .about-us-section p{
+    padding: 0px 30px 0px;
+  }
+  .pname{
+    font-size: 15px;
+  }
+  .names{
+    font-size: 14px;
+  }
+}

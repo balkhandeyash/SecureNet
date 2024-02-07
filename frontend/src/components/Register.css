@@ -99,6 +99,10 @@
   animation: fadeInOut 1.5s infinite alternate;
 }
 
+.form-group-recaptcha{
+  align-items: center;
+}
+
 @keyframes fadeInOut {
   from {
     opacity: 0.5;
@@ -151,5 +155,9 @@
   .progress-bar-container {
       width: 80px; /* Adjust the width as needed */
       height: 80px; /* Adjust the height as needed */
+  }
+
+  .form-group-recaptcha{
+
   }
 }

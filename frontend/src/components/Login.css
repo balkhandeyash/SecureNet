@@ -63,6 +63,10 @@
     background-color: #2980b9;
 }
 
+.form-group-recaptcha{
+    margin-left: 50px
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -89,5 +93,9 @@
         padding: 8px 12px;
         font-size: 14px;
         margin-top: 10px;
+    }
+
+    .form-group-recaptcha{
+        margin-left: 0px;
     }
 }

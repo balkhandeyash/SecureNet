@@ -157,9 +157,9 @@ const Login = ({ setToken }) => {
                 ></i>
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group-recaptcha">
               {/* Google reCAPTCHA */}
-              <ReCAPTCHA
+              <ReCAPTCHA 
                 sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                 onChange={(value) => setCaptchaValue(value)}
               />

@@ -195,7 +195,7 @@ const Register = () => {
                 />
               </div>
             )}
-            <div className="form-group">
+            <div className="form-group-recaptcha">
               {/* Google reCAPTCHA */}
               <ReCAPTCHA
                 sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"

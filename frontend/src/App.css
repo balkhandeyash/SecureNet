@@ -15,6 +15,7 @@ body {
   overflow: hidden; /* Optional: Prevents scrollbars */
   display: flex;
   flex-direction: column;
+  min-width: 392px;
 }
 
 .Header {

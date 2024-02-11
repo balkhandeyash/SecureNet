@@ -3,6 +3,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
+import { logout } from "./AuthService"; 
 
 function Header() {
   const location = useLocation();
@@ -13,6 +14,11 @@ function Header() {
     location.pathname === "/";
 
   const shouldRenderDropdown = !isLoginRegisterPage; // Render dropdown only if not on login/register/landing page
+
+  const handleLogout = () => {
+    // Call the logout function to clear the token
+    logout();
+  };
 
   return (
     <>
@@ -52,7 +58,7 @@ function Header() {
               <Link to="/dashboard">Job Openings</Link>
               {/* <Link to="#">Notifications</Link>  */}
               <Link to="#">Post a Job</Link>
-              <Link to="/">Logout</Link>
+              <Link to="/" onClick={handleLogout}>Logout</Link> {/* Add onClick event to call handleLogout */}
             </div>
           </div>
         ) : null}

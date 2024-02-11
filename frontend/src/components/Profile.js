@@ -57,7 +57,7 @@ const Profile = () => {
         editedValuesTemp,
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
         }
       );
@@ -66,7 +66,7 @@ const Profile = () => {
         "https://securenet-backend.vercel.app/api/user",
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
         }
       );
@@ -90,6 +90,19 @@ const Profile = () => {
   const handlePasswordUpdate = async (e) => {
     e.preventDefault(); // Prevent form submission
     const { currentPassword, newPassword, confirmNewPassword } = editedValuesTemp;
+
+    // Check if any field is empty
+    const emptyFields = [];
+    if (!currentPassword) emptyFields.push("Current Password");
+    if (!newPassword) emptyFields.push("New Password");
+    if (!confirmNewPassword) emptyFields.push("Confirm New Password");
+
+    // Show alert if any field is empty
+    if (emptyFields.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyFields.join(", ")}`;
+      alert(errorMessage);
+      return;
+    }
   
     try {
       if (newPassword !== confirmNewPassword) {
@@ -109,7 +122,7 @@ const Profile = () => {
         },
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: sessionStorage.getItem("token"),
           },
         }
       );
@@ -118,9 +131,33 @@ const Profile = () => {
   
       // Close the password update dialog
       setIsPasswordUpdateZoomed(false);
+      setEditedValuesTemp((prevValues) => ({
+        ...prevValues,
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      }));
     } catch (error) {
-      console.error("Error updating password:", error);
+      // Check if the error is due to incorrect current password
+      if (error.response && error.response.status === 401) {
+        alert("Incorrect current password. Please try again.");
+      } else {
+        console.error("Error updating password:", error);
+      }
     }
+  };
+
+  const handleCloseButtonClick = () => {
+    // Clear password-related fields
+    setEditedValuesTemp({
+      ...editedValuesTemp,
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    });
+  
+    // Close the zoomed card
+    setIsPasswordUpdateZoomed(false);
   };
   
 
@@ -131,7 +168,7 @@ const Profile = () => {
           "https://securenet-backend.vercel.app/api/user",
           {
             headers: {
-              Authorization: localStorage.getItem("token"), // Include the token in the request headers
+              Authorization: sessionStorage.getItem("token"), // Include the token in the request headers
             },
           }
         );
@@ -239,7 +276,7 @@ const Profile = () => {
         <button onClick={handlePasswordUpdate}>Update</button>
         <button
           className="close"
-          onClick={() => setIsPasswordUpdateZoomed(false)}
+          onClick={handleCloseButtonClick}
         >
           Close
         </button>

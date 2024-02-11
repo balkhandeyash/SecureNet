@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import ReCAPTCHA from "react-google-recaptcha";
-
-import axios from "axios"; // Import axios here
+import axios from "axios";
 
 const Login = ({ setToken }) => {
   const [username, setUsername] = useState("");
@@ -16,13 +15,11 @@ const Login = ({ setToken }) => {
 
   const handleSendOTP = async () => {
     try {
-      // Check if username is provided
       if (!username) {
         alert("Please enter your username.");
         return;
       }
 
-      // Send a request to the server to initiate OTP sending
       const response = await axios.post(
         "https://securenet-backend.vercel.app/login-otp",
         { username },
@@ -33,12 +30,9 @@ const Login = ({ setToken }) => {
         }
       );
 
-      // Check if the server successfully initiated OTP sending
       if (response.status === 200) {
-        // Assuming the server sends a response like { email: "user@example.com" }
         const email = response.data.email;
 
-        // Generate and send OTP to the provided email
         const otpResponse = await axios.post(
           "https://securenet-backend.vercel.app/send-otp",
           { email },
@@ -49,7 +43,6 @@ const Login = ({ setToken }) => {
           }
         );
 
-        // Check if OTP sending was successful
         if (otpResponse.status === 200) {
           alert("OTP sent successfully. Check your email.");
           setOtpSent(true);
@@ -68,7 +61,6 @@ const Login = ({ setToken }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Validate email and OTP if OTP has been sent
       if (otpSent && (!username || !otp || !captchaValue)) {
         alert(
           "Please enter your username, OTP, and complete the reCAPTCHA verification."
@@ -89,26 +81,21 @@ const Login = ({ setToken }) => {
           },
         }
       );
-
-      // Check if reCAPTCHA is verified
+  
       if (!captchaValue) {
         alert("Please complete the reCAPTCHA verification.");
         return;
       }
-
+  
       if (response.status === 200) {
         console.log("login Success");
-        //console.log(response.data.token)
-        localStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("token", response.data.token); // Use sessionStorage
         setToken(response.data.token);
-        //console.log(response.data.token);
         navigate("/dashboard");
       } else if (response.status === 401) {
-        // Invalid credentials, show error message
         console.error("Invalid credentials");
         alert("Invalid credentials. Please try again.");
       } else {
-        // Other errors, show a generic error message
         console.error("Login failed:", response.statusText);
         alert("Login failed. Please try again later.");
       }
@@ -117,6 +104,13 @@ const Login = ({ setToken }) => {
       console.log(error.response.data);
       alert("Error during login");
     }
+  };
+  
+
+  // eslint-disable-next-line
+  const logout = () => {
+    sessionStorage.removeItem("token"); // Clear token from sessionStorage
+    setToken(null);
   };
 
   return (
@@ -170,7 +164,6 @@ const Login = ({ setToken }) => {
                 Send OTP
               </button>
             </div>
-            {/* Display OTP input field only if OTP has been sent */}
             {otpSent && (
               <div className="form-group">
                 <label htmlFor="otp">Enter OTP:</label>

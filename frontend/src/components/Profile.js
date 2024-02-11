@@ -82,6 +82,7 @@ const Profile = () => {
   };
 
   const updatePassword = async (currentPassword, newPassword, confirmNewPassword) => {
+    const { currentPassword, newPassword, confirmNewPassword } = editedValuesTemp;
     try {
       if (newPassword !== confirmNewPassword) {
         console.error("New password and confirm new password do not match");

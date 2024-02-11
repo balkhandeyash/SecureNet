@@ -82,25 +82,30 @@ const Profile = () => {
     }
   };
 
-  const updatePassword = async () => {
-    const { currentPassword, newPassword, confirmNewPassword } =
-      editedValuesTemp;
+  // const updatePassword = (currentPassword, newPassword) => {
+  //   console.log("Updating password:", currentPassword, newPassword);
+  //   setIsPasswordUpdateZoomed(false);
+  // };
+
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault(); // Prevent form submission
+    const { currentPassword, newPassword, confirmNewPassword } = editedValuesTemp;
+  
     try {
       if (newPassword !== confirmNewPassword) {
         console.error("New password and confirm new password do not match");
         return;
       }
-
-      console.log("Updating password...");
-
-      // Make a PUT request to update the user's password
+  
+      console.log("Updating Password ...");
+  
+      // Make a POST request to update the password
       // eslint-disable-next-line
-      const response = await axios.put(
-        "https://securenet-backend.vercel.app/api/user",
+      const response = await axios.post(
+        "https://securenet-backend.vercel.app/api/updatepassword",
         {
           currentPassword,
           newPassword,
-          confirmNewPassword,
         },
         {
           headers: {
@@ -108,15 +113,16 @@ const Profile = () => {
           },
         }
       );
-
+  
       console.log("Password updated successfully");
-
+  
       // Close the password update dialog
       setIsPasswordUpdateZoomed(false);
     } catch (error) {
-      console.error("Error updating user password:", error);
+      console.error("Error updating password:", error);
     }
   };
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -202,24 +208,48 @@ const Profile = () => {
         </div>
       )}
 
-      {isPasswordUpdateZoomed && (
-        <div className="zoomed-card">
-          <div className="profile-card">
-            <form>
-              <input type="password" placeholder="Current Password" />
-              <input type="password" placeholder="New Password" />
-              <input type="password" placeholder="Confirm New Password" />
-              <button onClick={updatePassword}>Update</button>
-              <button
-                className="close"
-                onClick={() => setIsPasswordUpdateZoomed(false)}
-              >
-                Close
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+{isPasswordUpdateZoomed && (
+  <div className="zoomed-card">
+    <div className="profile-card">
+      <form onSubmit={(e) => e.preventDefault()}>
+        <input
+          type="password"
+          placeholder="Current Password"
+          value={editedValuesTemp.currentPassword}
+          onChange={(e) =>
+            handleInputChange("currentPassword", e.target.value)
+          }
+        />
+        <input
+          type="password"
+          placeholder="New Password"
+          value={editedValuesTemp.newPassword}
+          onChange={(e) =>
+            handleInputChange("newPassword", e.target.value)
+          }
+        />
+        <input
+          type="password"
+          placeholder="Confirm New Password"
+          value={editedValuesTemp.confirmNewPassword}
+          onChange={(e) =>
+            handleInputChange("confirmNewPassword", e.target.value)
+          }
+        />
+        <button onClick={handlePasswordUpdate}>Update</button>
+        <button
+          className="close"
+          onClick={() => setIsPasswordUpdateZoomed(false)}
+        >
+          Close
+        </button>
+      </form>
+    </div>
+  </div>
+)}
+
+
+
     </div>
   );
 };

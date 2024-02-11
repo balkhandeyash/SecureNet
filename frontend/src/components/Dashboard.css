@@ -20,6 +20,7 @@
 }
 
 .job-listing-container {
+  width: 100%;
   position: relative;
   margin-top: 20px;
   transition: filter 0.3s ease; /* Smooth transition for the blur effect */
@@ -38,7 +39,7 @@
 .job-card {
   position: relative;
   border: 1px solid #ddd;
-  padding: 20px; /* Increase padding for better spacing */
+  padding: 20px 30px 20px; /* Increase padding for better spacing */
   border-radius: 18px;
   height: 300px;
   cursor: pointer;
@@ -82,7 +83,7 @@
   border-radius: 18px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 3;
-  width: 60vw;
+  width: 55vw;
   height: 70vh;
   overflow-y: auto;
   padding-bottom: 50px;
@@ -91,6 +92,7 @@
   flex-direction: column; /* Adjust for vertical centering */
   align-items: center; 
   overflow-x: hidden; 
+  padding: 30px 60px 30px;
 }
 
 .close-button {
@@ -157,9 +159,9 @@ button:disabled {
   }
 
   .job-card {
-    width: 80vw;
+    width: 70vw;
     height: 300px;
-    padding: 15px;
+    padding: 25px;
     /* Adjust padding for smaller screens */
     border-radius: 12px;
   }
@@ -171,11 +173,11 @@ button:disabled {
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    padding: 20px;
+    padding: 20px 30px 20px;
     border-radius: 18px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 3;
-    width: 80vw;
+    width: 75vw;
     height: 60vh;
     max-width: 80vw;
     overflow-x: hidden; 
@@ -211,6 +213,10 @@ button:disabled {
     text-align: center;
     color: #007bff; /* Set link color to blue */
     text-decoration: none; /* Remove underline */
+  }
+  .job-card.selected {
+    transform: scale(1.13);
+    z-index: 2;
   }
 
 }

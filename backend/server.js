@@ -157,6 +157,13 @@ app.get("/", async (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const { name, username, password, captchaResponse, email, otp } = req.body;
+
+    // Encrypt sensitive user data using CryptoJS
+    const encryptedName = CryptoJS.AES.encrypt(name, secretKey).toString();
+    const encryptedUsername = CryptoJS.AES.encrypt(username, secretKey).toString();
+    const encryptedEmail = CryptoJS.AES.encrypt(email, secretKey).toString();
+    const encryptedOtp = CryptoJS.AES.encrypt(otp, secretKey).toString();
+
     const existingUser = await User.findOne({ username });
 
     // Verify OTP length
@@ -187,10 +194,11 @@ app.post("/register", async (req, res) => {
     // If username is unique, create a new user and save it in the database
     const hashedPassword = await bcrypt.hashSync(password, 10);
     const newUser = new User({
-      name,
-      username,
+      name: encryptedName,
+      username: encryptedUsername,
       password: hashedPassword,
-      email,
+      email: encryptedEmail,
+      otp: encryptedOtp,
     });
     await newUser.save();
 
@@ -264,11 +272,16 @@ app.get("/api/user", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Return user details in the response
+    // Decrypt encrypted user data using CryptoJS
+    const decryptedName = CryptoJS.AES.decrypt(user.name, secretKey).toString(CryptoJS.enc.Utf8);
+    const decryptedUsername = CryptoJS.AES.decrypt(user.username, secretKey).toString(CryptoJS.enc.Utf8);
+    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(CryptoJS.enc.Utf8);
+
+    // Return decrypted user details in the response
     res.status(200).json({
-      username: user.username,
-      name: user.name,
-      email: user.email,
+      username: decryptedUsername,
+      name: decryptedName,
+      email: decryptedEmail,
       // Add other user details as needed
     });
   } catch (error) {
@@ -276,6 +289,7 @@ app.get("/api/user", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Error fetching user details" });
   }
 });
+
 
 app.post("/api/send-email", async (req, res) => {
   const { name, email, message } = req.body;

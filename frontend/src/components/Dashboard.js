@@ -1,5 +1,4 @@
-// Dashboard.js
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Dashboard.css";
 import JobDetailsCard from "./JobDetailsCard.js";
@@ -8,8 +7,10 @@ const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [isJobDetailsOpen, setIsJobDetailsOpen] = useState(false); // New state
   const jobsPerPage = 15;
   const jobListingRef = useRef(null);
+  const jobDetailRef = useRef(null);
 
   useEffect(() => {
     // Fetch jobs from the server when the component mounts
@@ -38,18 +39,25 @@ const Dashboard = () => {
   };
 
   const handleJobClick = (jobId) => {
-    setSelectedJob(jobId);
+    if (!isJobDetailsOpen) {
+      setSelectedJob(jobId);
+      setIsJobDetailsOpen(true);
+    }
   };
 
   const handleDocumentClick = (event) => {
     if (
       jobListingRef.current &&
-      !jobListingRef.current.contains(event.target)
+      jobDetailRef.current &&
+      !jobListingRef.current.contains(event.target) &&
+      !jobDetailRef.current.contains(event.target)
     ) {
-      // Clicked outside the job listing container
+      // Clicked outside the job listing container and job detail card
       setSelectedJob(null);
+      setIsJobDetailsOpen(false);
     }
   };
+  
 
   useEffect(() => {
     document.addEventListener("click", handleDocumentClick);
@@ -64,7 +72,7 @@ const Dashboard = () => {
       <h2>Job Listings</h2>
       <div
         ref={jobListingRef}
-        className={`job-listing-container ${selectedJob ? "zoomed" : ""}`}
+        className={`job-listing-container ${isJobDetailsOpen ? "zoomed" : ""}`}
       >
         <div className="job-grid">
           {jobs.map((job) => (
@@ -100,10 +108,15 @@ const Dashboard = () => {
       </div>
 
       {selectedJob && (
-        <JobDetailsCard
-          job={jobs.find((job) => job._id === selectedJob)}
-          onClose={() => setSelectedJob(null)}
-        />
+        <div ref={jobDetailRef}>
+          <JobDetailsCard
+            job={jobs.find((job) => job._id === selectedJob)}
+            onClose={() => {
+              setSelectedJob(null);
+              setIsJobDetailsOpen(false);
+            }}
+          />
+        </div>
       )}
     </div>
   );

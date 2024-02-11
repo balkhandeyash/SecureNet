@@ -96,7 +96,7 @@ const Profile = () => {
       // Make a PUT request to update the user's password
       // eslint-disable-next-line
       const response = await axios.put(
-        "https://securenet-backend.vercel.app/api/user/password",
+        "https://securenet-backend.vercel.app/api/user",
         {
           currentPassword,
           newPassword,

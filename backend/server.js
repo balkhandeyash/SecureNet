@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const CryptoJS = require("crypto-js");
 const cors = require("cors");
 const axios = require("axios");
 const nodemailer = require("nodemailer");
@@ -153,14 +154,16 @@ app.get("/", async (req, res) => {
   res.send(existingUser);
 });*/
 
-
 app.post("/register", async (req, res) => {
   try {
     const { name, username, password, captchaResponse, email, otp } = req.body;
 
     // Encrypt sensitive user data using CryptoJS
     const encryptedName = CryptoJS.AES.encrypt(name, secretKey).toString();
-    const encryptedUsername = CryptoJS.AES.encrypt(username, secretKey).toString();
+    const encryptedUsername = CryptoJS.AES.encrypt(
+      username,
+      secretKey
+    ).toString();
     const encryptedEmail = CryptoJS.AES.encrypt(email, secretKey).toString();
     const encryptedOtp = CryptoJS.AES.encrypt(otp, secretKey).toString();
 
@@ -273,9 +276,16 @@ app.get("/api/user", verifyToken, async (req, res) => {
     }
 
     // Decrypt encrypted user data using CryptoJS
-    const decryptedName = CryptoJS.AES.decrypt(user.name, secretKey).toString(CryptoJS.enc.Utf8);
-    const decryptedUsername = CryptoJS.AES.decrypt(user.username, secretKey).toString(CryptoJS.enc.Utf8);
-    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(CryptoJS.enc.Utf8);
+    const decryptedName = CryptoJS.AES.decrypt(user.name, secretKey).toString(
+      CryptoJS.enc.Utf8
+    );
+    const decryptedUsername = CryptoJS.AES.decrypt(
+      user.username,
+      secretKey
+    ).toString(CryptoJS.enc.Utf8);
+    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(
+      CryptoJS.enc.Utf8
+    );
 
     // Return decrypted user details in the response
     res.status(200).json({
@@ -289,7 +299,6 @@ app.get("/api/user", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Error fetching user details" });
   }
 });
-
 
 app.post("/api/send-email", async (req, res) => {
   const { name, email, message } = req.body;

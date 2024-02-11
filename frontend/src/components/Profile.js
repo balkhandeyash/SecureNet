@@ -71,9 +71,53 @@ const Profile = () => {
       console.error("Error updating user profile:", error);
     }
   };
-  const updatePassword = (currentPassword, newPassword) => {
-    console.log("Updating password:", currentPassword, newPassword);
-    setIsPasswordUpdateZoomed(false);
+  
+  const updatePassword = async (currentPassword, newPassword, confirmPassword) => {
+    try {
+      // Fetch the user's data from MongoDB based on their ID
+      const response = await axios.get(
+        "https://securenet-backend.vercel.app/api/user",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      const userData = response.data;
+
+      // Compare the entered current password with the hashed password stored in the database
+      const isPasswordMatch = await bcrypt.compare(currentPassword, userData.password);
+
+      if (!isPasswordMatch) {
+        console.error("Current password is incorrect");
+        return;
+      }
+
+      // Check if the new password matches the confirmation
+      if (newPassword !== confirmPassword) {
+        console.error("New password and confirmation do not match");
+        return;
+      }
+
+      // Hash the new password
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+      // Make a PUT request to update the user's password in the database
+      await axios.put(
+        "https://securenet-backend.vercel.app/api/user/password",
+        { newPassword: hashedNewPassword },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      console.log("Password updated successfully");
+      setIsPasswordUpdateZoomed(false);
+    } catch (error) {
+      console.error("Error updating password:", error);
+    }
   };
 
   useEffect(() => {
@@ -168,7 +212,7 @@ const Profile = () => {
               <input type="password" placeholder="New Password" />
               <input type="password" placeholder="Confirm New Password" />
               <button
-                onClick={() => updatePassword("currentPassword", "newPassword")}
+                onClick={() => updatePassword(currentPassword, newPassword, confirmPassword)}
               >
                 Update
               </button>

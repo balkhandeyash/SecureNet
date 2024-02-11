@@ -81,7 +81,7 @@ const Profile = () => {
     }
   };
 
-  const updatePassword = async (currentPassword, newPassword, confirmNewPassword) => {
+  const updatePassword = async () => {
     const { currentPassword, newPassword, confirmNewPassword } = editedValuesTemp;
     try {
       if (newPassword !== confirmNewPassword) {
@@ -206,9 +206,7 @@ const Profile = () => {
               <input type="password" placeholder="Current Password" />
               <input type="password" placeholder="New Password" />
               <input type="password" placeholder="Confirm New Password" />
-              <button
-                onClick={() => updatePassword(currentPassword, newPassword, confirmNewPassword)}
-              >
+              <button onClick={updatePassword}>
                 Update
               </button>
               <button

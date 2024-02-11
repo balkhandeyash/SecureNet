@@ -12,6 +12,7 @@ const Login = ({ setToken }) => {
   const [otp, setOtp] = useState("");
   const [captchaValue, setCaptchaValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [sendingOTP, setSendingOTP] = useState(false);
 
   const handleSendOTP = async () => {
     try {
@@ -19,7 +20,9 @@ const Login = ({ setToken }) => {
         alert("Please enter your username.");
         return;
       }
-
+  
+      setSendingOTP(true);
+  
       const response = await axios.post(
         "https://securenet-backend.vercel.app/login-otp",
         { username },
@@ -29,13 +32,23 @@ const Login = ({ setToken }) => {
           },
         }
       );
-
-      
+  
+      if (response.status === 200) {
+        const email = response.data.email;
+  
+        alert("OTP sent successfully. Check your email.");
+        setOtpSent(true);
+      } else {
+        alert("You don't have any registered email for this username.");
+      }
     } catch (error) {
       console.error("Error sending OTP:", error);
       alert("Error sending OTP. Please try again later.");
+    } finally {
+      setSendingOTP(false); // Re-enable the "Send OTP" button regardless of the outcome
     }
   };
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -60,12 +73,12 @@ const Login = ({ setToken }) => {
           },
         }
       );
-  
+
       if (!captchaValue) {
         alert("Please complete the reCAPTCHA verification.");
         return;
       }
-  
+
       if (response.status === 200) {
         console.log("login Success");
         sessionStorage.setItem("token", response.data.token); // Use sessionStorage
@@ -84,7 +97,6 @@ const Login = ({ setToken }) => {
       alert("Error during login");
     }
   };
-  
 
   // eslint-disable-next-line
   const logout = () => {
@@ -132,14 +144,14 @@ const Login = ({ setToken }) => {
             </div>
             <div className="form-group-recaptcha">
               {/* Google reCAPTCHA */}
-              <ReCAPTCHA 
+              <ReCAPTCHA
                 sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                 onChange={(value) => setCaptchaValue(value)}
               />
             </div>
             <div className="form-group">
               {/* Button to send OTP */}
-              <button type="button" onClick={handleSendOTP}>
+              <button type="button" onClick={handleSendOTP} disabled={sendingOTP} >
                 Send OTP
               </button>
             </div>

@@ -217,10 +217,10 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
-    const { username, password, captchaResponse } = req.body;
-    const user = await User.findOne({ username: req.body.username });
-    // console.log("Pass : ", password, " Hash : ", user.password);
+    const { username, password, captchaResponse, otp } = req.body;
+    const user = await User.findOne({ username });
 
+    // Verify reCAPTCHA response
     const recaptchaSecretKey = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
     const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${captchaResponse}`;
 
@@ -231,23 +231,48 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ error: "reCAPTCHA verification failed" });
     }
 
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      console.log("Inside Conditon");
-      return res.status(401).send("Invalid credentials.");
+    // Check if the user exists
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
     }
+
+    // Decrypt the user's email using CryptoJS
+    // const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(CryptoJS.enc.Utf8);
+
+    // Verify OTP length
+    if (otp.length !== 6 || !/^\d+$/.test(otp)) {
+      return res.status(400).json({ error: "Invalid OTP format" });
+    }
+
+    // Verify OTP
+    if (user.otp !== otp) {
+      return res.status(401).json({ error: "Invalid OTP" });
+    }
+
+    // Verify if the OTP is still valid (within the specified timeframe)
+    if (!isOtpValid(user.otpTimestamp)) {
+      return res.status(401).json({ error: "OTP has expired" });
+    }
+
+    // Verify password
+    if (!bcrypt.compareSync(password, user.password)) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // Generate JWT token for authentication
     const token = jwt.sign(
       { userId: user._id, username: user.username },
       secretKey,
-      {
-        expiresIn: "5h",
-      }
+      { expiresIn: "5h" }
     );
 
-    res.status(200).json({ message: "Success", token });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
-    res.status(500).send("Error logging in.");
+    console.error("Error during login:", error);
+    res.status(500).json({ error: "Error during login" });
   }
 });
+
 
 app.post("/LandingPage", async (req, res) => {});
 

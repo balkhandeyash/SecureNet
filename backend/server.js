@@ -328,24 +328,22 @@ app.post("/api/send-email", async (req, res) => {
 app.put("/api/user", verifyToken, async (req, res) => {
   try {
     const userId = req.user.userId;
-
-    // Fetch the user from the database based on the userId
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Update the user details with the data from the request body
-    user.username = req.body.username || user.username;
-    user.name = CryptoJS.AES.encrypt(
-      req.body.name || user.name,
-      secretKey
-    ).toString();
-    user.email = CryptoJS.AES.encrypt(
-      req.body.email || user.email,
-      secretKey
-    ).toString();
+    // Update the user details only if the request body contains the corresponding fields
+    if (req.body.username) {
+      user.username = req.body.username;
+    }
+    if (req.body.name) {
+      user.name = CryptoJS.AES.encrypt(req.body.name, secretKey).toString();
+    }
+    if (req.body.email) {
+      user.email = CryptoJS.AES.encrypt(req.body.email, secretKey).toString();
+    }
 
     // Save the updated user details in the database
     await user.save();
@@ -362,6 +360,7 @@ app.put("/api/user", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Error updating user profile" });
   }
 });
+
 
 app.get("/jobs", async (req, res) => {
   try {

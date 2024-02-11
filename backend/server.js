@@ -198,7 +198,7 @@ app.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hashSync(password, 10);
     const newUser = new User({
       name: encryptedName,
-      username: encryptedUsername,
+      username: username,
       password: hashedPassword,
       email: encryptedEmail,
       otp: encryptedOtp,
@@ -215,11 +215,7 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { username, password, captchaResponse } = req.body;
-    const encryptedUsername = CryptoJS.AES.encrypt(
-      username,
-      secretKey
-    ).toString();
-    const user = await User.findOne({ username: encryptedUsername });
+    const user = await User.findOne({ username: req.body.username });
     // console.log("Pass : ", password, " Hash : ", user.password);
 
     const recaptchaSecretKey = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";

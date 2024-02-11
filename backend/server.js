@@ -275,23 +275,11 @@ app.get("/api/user", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Decrypt encrypted user data using CryptoJS
-    const decryptedName = CryptoJS.AES.decrypt(user.name, secretKey).toString(
-      CryptoJS.enc.Utf8
-    );
-    const decryptedUsername = CryptoJS.AES.decrypt(
-      user.username,
-      secretKey
-    ).toString(CryptoJS.enc.Utf8);
-    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(
-      CryptoJS.enc.Utf8
-    );
-
-    // Return decrypted user details in the response
+    // Return user details in the response
     res.status(200).json({
-      username: decryptedUsername,
-      name: decryptedName,
-      email: decryptedEmail,
+      username: user.username,
+      name: user.name,
+      email: user.email,
       // Add other user details as needed
     });
   } catch (error) {

@@ -93,6 +93,10 @@ app.post("/login-otp", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    // Decrypt the user's email using CryptoJS
+    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(CryptoJS.enc.Utf8);
+
+    console.log(decryptedEmail);
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
@@ -102,17 +106,16 @@ app.post("/login-otp", async (req, res) => {
       { $set: { otp, otpTimestamp: timestamp } }
     );
 
-    // Send OTP to the provided email
-    await sendOtpEmail(user.email, otp);
+    // Send OTP to the decrypted email
+    await sendOtpEmail(decryptedEmail, otp);
 
-    res
-      .status(200)
-      .json({ message: "OTP sent successfully", email: user.email });
+    res.status(200).json({ message: "OTP sent successfully", email: decryptedEmail });
   } catch (error) {
     console.error("Error sending OTP:", error);
     res.status(500).json({ error: "Error sending OTP" });
   }
 });
+
 
 app.post("/send-otp", async (req, res) => {
   try {

@@ -30,28 +30,7 @@ const Login = ({ setToken }) => {
         }
       );
 
-      if (response.status === 200) {
-        const email = response.data.email;
-
-        const otpResponse = await axios.post(
-          "https://securenet-backend.vercel.app/send-otp",
-          { email },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (otpResponse.status === 200) {
-          alert("OTP sent successfully. Check your email.");
-          setOtpSent(true);
-        } else {
-          alert("Failed to send OTP. Please try again.");
-        }
-      } else {
-        alert("You don't have any registered email for this username.");
-      }
+      
     } catch (error) {
       console.error("Error sending OTP:", error);
       alert("Error sending OTP. Please try again later.");

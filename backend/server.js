@@ -361,7 +361,7 @@ app.put("/api/user", verifyToken, async (req, res) => {
   }
 });
 
-app.put("/api/user/password", verifyToken, async (req, res) => {
+app.post("/api/user/password", verifyToken, async (req, res) => {
   try {
     const userId = req.user.userId;
     const { currentPassword, newPassword } = req.body;

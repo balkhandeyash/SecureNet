@@ -361,6 +361,44 @@ app.put("/api/user", verifyToken, async (req, res) => {
   }
 });
 
+app.put("/api/user/password", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { currentPassword, newPassword } = req.body;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Compare the current password with the password stored in the database
+    const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+
+    // If passwords don't match, return an error
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: "Current password is incorrect" });
+    }
+
+    // Hash the new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password
+    user.password = hashedNewPassword;
+
+    // Save the updated user in the database
+    await user.save();
+
+    // Send a success response
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating user password:", error);
+    res.status(500).json({ error: "Error updating user password" });
+  }
+});
+
 
 app.get("/jobs", async (req, res) => {
   try {

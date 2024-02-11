@@ -10,6 +10,9 @@ const Profile = () => {
     username: "Default Username",
     name: "Default Name",
     email: "default@example.com",
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword:"",
     // Add other user data fields as needed
   });
 
@@ -17,6 +20,9 @@ const Profile = () => {
     username: "",
     name: "",
     email: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword:"",
     // Add other user data fields as needed
   });
 
@@ -24,6 +30,9 @@ const Profile = () => {
     username: "",
     name: "",
     email: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword:"",
     // Add other user data fields as needed
   });
 
@@ -71,54 +80,39 @@ const Profile = () => {
       console.error("Error updating user profile:", error);
     }
   };
-  
-  const updatePassword = async (currentPassword, newPassword, confirmPassword) => {
+
+  const updatePassword = async (currentPassword, newPassword, confirmNewPassword) => {
     try {
-      // Fetch the user's data from MongoDB based on their ID
-      const response = await axios.get(
-        "https://securenet-backend.vercel.app/api/user",
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
-      const userData = response.data;
-
-      // Compare the entered current password with the hashed password stored in the database
-      const isPasswordMatch = await bcrypt.compare(currentPassword, userData.password);
-
-      if (!isPasswordMatch) {
-        console.error("Current password is incorrect");
+      if (newPassword !== confirmNewPassword) {
+        console.error("New password and confirm new password do not match");
         return;
       }
-
-      // Check if the new password matches the confirmation
-      if (newPassword !== confirmPassword) {
-        console.error("New password and confirmation do not match");
-        return;
-      }
-
-      // Hash the new password
-      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-      // Make a PUT request to update the user's password in the database
-      await axios.put(
+  
+      console.log("Updating password...");
+  
+      // Make a PUT request to update the user's password
+      const response = await axios.put(
         "https://securenet-backend.vercel.app/api/user/password",
-        { newPassword: hashedNewPassword },
+        {
+          currentPassword,
+          newPassword,
+        },
         {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
         }
       );
-
+  
       console.log("Password updated successfully");
+  
+      // Close the password update dialog
       setIsPasswordUpdateZoomed(false);
     } catch (error) {
-      console.error("Error updating password:", error);
+      console.error("Error updating user password:", error);
     }
   };
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -212,7 +206,7 @@ const Profile = () => {
               <input type="password" placeholder="New Password" />
               <input type="password" placeholder="Confirm New Password" />
               <button
-                onClick={() => updatePassword(currentPassword, newPassword, confirmPassword)}
+                onClick={() => updatePassword(currentPassword, newPassword, confirmNewPassword)}
               >
                 Update
               </button>

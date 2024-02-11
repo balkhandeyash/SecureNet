@@ -215,8 +215,12 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { username, password, captchaResponse } = req.body;
-    const user = await User.findOne({ username: req.body.username });
-    console.log("Pass : ", password, " Hash : ", user.password);
+    const encryptedUsername = CryptoJS.AES.encrypt(
+      username,
+      secretKey
+    ).toString();
+    const user = await User.findOne({ username: encryptedUsername });
+    // console.log("Pass : ", password, " Hash : ", user.password);
 
     const recaptchaSecretKey = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
     const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${captchaResponse}`;

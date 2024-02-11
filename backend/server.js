@@ -338,8 +338,14 @@ app.put("/api/user", verifyToken, async (req, res) => {
 
     // Update the user details with the data from the request body
     user.username = req.body.username || user.username;
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
+    user.name = CryptoJS.AES.encrypt(
+      req.body.name || user.name,
+      secretKey
+    ).toString();
+    user.email = CryptoJS.AES.encrypt(
+      req.body.email || user.email,
+      secretKey
+    ).toString();
 
     // Save the updated user details in the database
     await user.save();

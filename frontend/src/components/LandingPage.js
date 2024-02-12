@@ -22,6 +22,7 @@ function LandingPage() {
     fetchJobs();
   }, []);
 
+  // eslint-disable-next-line
   const fetchData = async () => {
     setLoading(true);
 
@@ -59,6 +60,7 @@ function LandingPage() {
 
   const fetchJobs = async () => {
     try {
+      // eslint-disable-next-line
       const response = await axios.get("https://securenet-backend.vercel.app/applyJobs");
       //console.log(response.data);
     } catch (error) {}
@@ -141,13 +143,7 @@ function LandingPage() {
 
         <div className="developers-section">
           <h2>Meet Our Team</h2>
-          <div className="developers-row">
-          <div className="developer">
-              <img src="Vijay.jpeg" alt="Developer 1" />
-              <p className="pname">Dr. V. B. Gadicha</p>
-              <p className="names">Mentor</p>
-            </div>
-          </div>
+  
           <div className="developers-row">
             <div className="developer">
               <img src="Yash.png" alt="Developer 1" />
@@ -170,6 +166,15 @@ function LandingPage() {
               <p className="names">Quality Analyst</p>
             </div>
           </div>
+
+          <div className="developers-row">
+          <div className="developer">
+              <img src="Vijay.jpeg" alt="Developer 1" />
+              <p className="pname">Dr. V. B. Gadicha</p>
+              <p className="names">Mentor</p>
+            </div>
+          </div>
+
         </div>
 
         <div className="divider"></div>

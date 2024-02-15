@@ -100,7 +100,9 @@ app.post("/login-otp", async (req, res) => {
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
-    const timestamp = Date.now();
+    const tstamp = Date.now();
+    const offset = 5.5 * 60 * 60 * 1000;
+    const timestamp = new Date(tstamp + offset);
     await User.findOneAndUpdate(
       { username },
       { $set: { otp, otpTimestamp: timestamp } }
@@ -125,7 +127,9 @@ app.post("/send-otp", async (req, res) => {
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
-    const timestamp = Date.now();
+    const tstamp = Date.now();
+    const offset = 5.5 * 60 * 60 * 1000;
+    const timestamp = new Date(tstamp + offset);
     await User.findOneAndUpdate(
       { email },
       { $set: { otp, otpTimestamp: timestamp } }

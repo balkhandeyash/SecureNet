@@ -33,7 +33,7 @@ const User = mongoose.model("User", {
   password: String,
   email: String,
   otp: String,
-  otpTimestamp: String,
+  otpTimestamp: Number,
 });
 
 const Job = mongoose.model("Job", {
@@ -78,13 +78,7 @@ const sendOtpEmail = async (email, otp) => {
 
 // Function to check if OTP is valid within the specified timeframe (5 minutes)
 const isOtpValid = (timestamp) => {
-  const currentTime = (() => {
-    const now = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
-  })();
+  const currentTime = Date.now();
   const expirationTime = timestamp + 5 * 60 * 1000; // 5 minutes in milliseconds
 
   return currentTime <= expirationTime;
@@ -106,14 +100,7 @@ app.post("/login-otp", async (req, res) => {
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
-    
-    const timestamp = (() => {
-      const now = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      return `${hours}:${minutes}:${seconds}`;
-    })();
+    const timestamp = Date.now();
     await User.findOneAndUpdate(
       { username },
       { $set: { otp, otpTimestamp: timestamp } }
@@ -138,13 +125,7 @@ app.post("/send-otp", async (req, res) => {
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
-    const timestamp = (() => {
-      const now = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      return `${hours}:${minutes}:${seconds}`;
-    })();
+    const timestamp = Date.now();
     await User.findOneAndUpdate(
       { email },
       { $set: { otp, otpTimestamp: timestamp } }

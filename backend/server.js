@@ -33,7 +33,7 @@ const User = mongoose.model("User", {
   password: String,
   email: String,
   otp: String,
-  otpTimestamp: Number,
+  otpTimestamp: Date,
 });
 
 const Job = mongoose.model("Job", {

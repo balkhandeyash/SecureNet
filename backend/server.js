@@ -78,7 +78,9 @@ const sendOtpEmail = async (email, otp) => {
 
 // Function to check if OTP is valid within the specified timeframe (5 minutes)
 const isOtpValid = (timestamp) => {
-  const currentTime = Date.now();
+  const tstamp = Date.now();
+  const offset = 5.5 * 60 * 60 * 1000;
+  const currentTime = new Date(tstamp + offset);
   const expirationTime = timestamp + 5 * 60 * 1000; // 5 minutes in milliseconds
 
   return currentTime <= expirationTime;

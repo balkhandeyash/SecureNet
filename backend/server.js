@@ -33,7 +33,7 @@ const User = mongoose.model("User", {
   password: String,
   email: String,
   otp: String,
-  otpTimestamp: Date,
+  otpTimestamp: Number,
 });
 
 const Job = mongoose.model("Job", {
@@ -78,9 +78,7 @@ const sendOtpEmail = async (email, otp) => {
 
 // Function to check if OTP is valid within the specified timeframe (5 minutes)
 const isOtpValid = (timestamp) => {
-  const tstamp = Date.now();
-  const offset = 5.5 * 60 * 60 * 1000;
-  const currentTime = new Date(tstamp + offset);
+  const currentTime = Date.now();
   const expirationTime = timestamp + 5 * 60 * 1000; // 5 minutes in milliseconds
 
   return currentTime <= expirationTime;
@@ -96,17 +94,13 @@ app.post("/login-otp", async (req, res) => {
     }
 
     // Decrypt the user's email using CryptoJS
-    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(
-      CryptoJS.enc.Utf8
-    );
+    const decryptedEmail = CryptoJS.AES.decrypt(user.email, secretKey).toString(CryptoJS.enc.Utf8);
 
     console.log(decryptedEmail);
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
-    const tstamp = Date.now();
-    const offset = 5.5 * 60 * 60 * 1000;
-    const timestamp = new Date(tstamp + offset);
+    const timestamp = Date.now();
     await User.findOneAndUpdate(
       { username },
       { $set: { otp, otpTimestamp: timestamp } }
@@ -115,14 +109,13 @@ app.post("/login-otp", async (req, res) => {
     // Send OTP to the decrypted email
     await sendOtpEmail(decryptedEmail, otp);
 
-    res
-      .status(200)
-      .json({ message: "OTP sent successfully", email: decryptedEmail });
+    res.status(200).json({ message: "OTP sent successfully", email: decryptedEmail });
   } catch (error) {
     console.error("Error sending OTP:", error);
     res.status(500).json({ error: "Error sending OTP" });
   }
 });
+
 
 app.post("/send-otp", async (req, res) => {
   try {
@@ -132,9 +125,7 @@ app.post("/send-otp", async (req, res) => {
     const otp = generateOTP();
 
     // Save the OTP and timestamp to the user's document in the database
-    const tstamp = Date.now();
-    const offset = 5.5 * 60 * 60 * 1000;
-    const timestamp = new Date(tstamp + offset);
+    const timestamp = Date.now();
     await User.findOneAndUpdate(
       { email },
       { $set: { otp, otpTimestamp: timestamp } }
@@ -282,6 +273,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+
 app.post("/LandingPage", async (req, res) => {});
 
 function verifyToken(req, res, next) {
@@ -411,10 +403,7 @@ app.post("/api/updatepassword", verifyToken, async (req, res) => {
     }
 
     // Compare the current password with the password stored in the database
-    const isPasswordMatch = await bcrypt.compare(
-      currentPassword,
-      user.password
-    );
+    const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
 
     // If passwords don't match, return an error
     if (!isPasswordMatch) {
@@ -437,6 +426,7 @@ app.post("/api/updatepassword", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Error updating user password" });
   }
 });
+
 
 app.get("/jobs", async (req, res) => {
   try {
